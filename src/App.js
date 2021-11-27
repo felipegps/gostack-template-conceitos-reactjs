@@ -6,34 +6,35 @@ import api from './services/api.js';
 
 function App() {
 
-  const [movies, setMovies] = useState([]);
+  const [repositories, setRepositories] = useState([]);
 
   async function handleAddRepository() {
 
-    const response = await api.post('movies', {
+    const response = await api.post('repositories', {
 
-      title: "Como montar um painel",
-      description: "Neste vídeo você irá aprender como montar um painel.",
-      tags : ["automacao", "painel", "montar"],
-      time : 1800,
-      default_image : "amazon.com.br/tananan",
-      file : "amazon.com.br/tananan"
+      title: 'Desafio Node.js',
+      url: 'http://github.com/...',
+      techs: [
+        'Nodejs',
+        'React',
+        'React Native'
+      ]
     });
 
-    const movie = response.data;
-    setMovies([...movies, movie]);
+    const repository = response.data;
+    setRepositories([...repositories, repository]);
   }
 
   async function handleRemoveRepository(id) {
-    await api.delete(`movies/${id}`);
+    await api.delete(`repositories/${id}`);
 
-    setMovies(movies.filter(movie => movie.id !== id));      
+    setRepositories(repositories.filter(repository => repository.id !== id));      
     
   }
 
   useEffect(() => {
-    api.get('movies').then(response => {
-    setMovies(response.data);
+    api.get('repositories').then(response => {
+    setRepositories(response.data);
     });
   }, []);
 
@@ -41,9 +42,9 @@ function App() {
     <div>
       <ul data-testid="repository-list">
         
-        {movies.map(movie => 
-        <li key={movie.id}>{movie.title}
-          <button onClick={() => handleRemoveRepository(movie.id)}>
+        {repositories.map(repository => 
+        <li key={repository.id}>{repository.title}
+          <button onClick={() => handleRemoveRepository(repository.id)}>
             Remover
           </button>
         </li>)}
